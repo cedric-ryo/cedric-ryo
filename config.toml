@@ -1,0 +1,39 @@
+baseURL = "http://example.org/"
+languageCode = "en-us"
+title = "cedric-ryo.com"
+theme = "hugo-coder"
+
+[params]
+  author = "cedric-ryo"
+  info = "Security Enginner"
+  description = "cedric-ryo's personal website"
+  keywords = "Security Enginner,English Beginner,CTF/Bug Bounty Beginner"
+  avatarurl = "images/icon.jpeg"
+
+[taxonomies]
+  category = "categories"
+  series = "series"
+  tag = "tags"
+  author = "authors"
+
+# Social links
+[[params.social]]
+  name = "Github"
+  icon = "fa fa-github fa-2x"
+  weight = 1
+  url = "https://github.com/cedric-ryo"
+[[params.social]]
+  name = "Twitter"
+  icon = "fa fa-twitter fa-2x"
+  weight = 2
+  url = "https://twitter.com/cedric_ryo"
+
+# Menu links
+[[menu.main]]
+  name = "Blog"
+  weight = 1
+  url  = "posts/"
+[[menu.main]]
+  name = "About"
+  weight = 2
+  url = "about/"
