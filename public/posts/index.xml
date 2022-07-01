@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>cedric-ryo.com</title>
-    <link>http://example.org/</link>
-    <description>Recent content on cedric-ryo.com</description>
+    <title>Posts on cedric-ryo.com</title>
+    <link>http://example.org/posts/</link>
+    <description>Recent content in Posts on cedric-ryo.com</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 01 Jul 2022 17:14:07 +0900</lastBuildDate><atom:link href="http://example.org/index.xml" rel="self" type="application/rss+xml" />
+    <lastBuildDate>Fri, 01 Jul 2022 17:14:07 +0900</lastBuildDate><atom:link href="http://example.org/posts/index.xml" rel="self" type="application/rss+xml" />
     <item>
       <title>HTB_Active_writeup</title>
       <link>http://example.org/posts/htb_active_writeup/</link>
@@ -24,15 +24,6 @@
       
       <guid>http://example.org/posts/my-first-post/</guid>
       <description>hello world    hello hugo</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://example.org/about/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://example.org/about/</guid>
-      <description>パーソナル情報:     名前: 外山 良 ハンドル名: cedric-ryo 誕生日: 1998/3/11 年齢: 24 一般的な趣味:  温泉 バイク    興味:     Offensive Security CTF Bug Bounty Python Go Container(Docker, Kubernetes)  自然言語:     Native:  種類: 日本語   Second Language:  種類: 英語（TOEIC 695点）    プログラミング言語:     Python(初心者レベル) Go(初心者レベル)  </description>
     </item>
     
   </channel>
