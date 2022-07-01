@@ -1,5 +1,5 @@
 +++ 
-draft = true
+draft = false
 date = 2022-07-01T16:16:03+09:00
 title = "hello world2"
 description = "hello world2"
