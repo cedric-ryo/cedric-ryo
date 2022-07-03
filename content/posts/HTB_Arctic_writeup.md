@@ -5,8 +5,8 @@ title = "HTB_Arctic_writeup"
 description = "HTB_Arctic_writeup"
 slug = ""
 authors = []
-tags = []
-categories = []
+tags = ["HackTheBox","OSCP"]
+categories = ["Cyber Security"]
 externalLink = ""
 series = []
 +++
