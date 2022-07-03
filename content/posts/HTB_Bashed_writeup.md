@@ -5,8 +5,8 @@ title = "HTB_Bashed_writeup"
 description = "HTB_Bashed_writeup"
 slug = ""
 authors = []
-tags = []
-categories = []
+tags = ["HackTheBox","OSCP"]
+categories = ["Cyber Security"]
 externalLink = ""
 series = []
 +++

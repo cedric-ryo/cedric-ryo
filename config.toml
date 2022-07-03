@@ -1,4 +1,4 @@
-baseURL = "http://example.org/"
+baseURL = "https://cedric-ryo.com/"
 languageCode = "en-us"
 title = "cedric-ryo.com"
 theme = "hugo-coder"
@@ -11,10 +11,8 @@ theme = "hugo-coder"
   avatarurl = "images/icon.jpeg"
 
 [taxonomies]
-  category = "categories"
-  series = "series"
   tag = "tags"
-  author = "authors"
+  category = "categories"
 
 # Social links
 [[params.social]]

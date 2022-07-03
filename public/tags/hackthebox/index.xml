@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>HackTheBox on cedric-ryo.com</title>
+    <link>https://cedric-ryo.com/tags/hackthebox/</link>
+    <description>Recent content in HackTheBox on cedric-ryo.com</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 Jul 2022 16:19:22 +0900</lastBuildDate><atom:link href="https://cedric-ryo.com/tags/hackthebox/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>HTB_Bashed_writeup</title>
+      <link>https://cedric-ryo.com/posts/htb_bashed_writeup/</link>
+      <pubDate>Sat, 02 Jul 2022 16:19:22 +0900</pubDate>
+      
+      <guid>https://cedric-ryo.com/posts/htb_bashed_writeup/</guid>
+      <description>【Hack The Box】 Bashed Writeup    Information     OS：Linux 難易度：Easy IPアドレス：10.129.100.143
+ Screenshot     Recon    autoreconでスキャンをし、80が空いていることがわかります。    └─# python3 autorecon.py 10.129.100.143 [*] Scanning target 10.129.100.143 [*] [10.129.100.143/all-tcp-ports] Discovered open port tcp/80 on 10.129.100.143 [*] [10.129.100.143/tcp/80/http/vhost-enum] The target was not a hostname, nor was a hostname provided as an option. Skipping virtual host enumeration. [*] [10.129.100.143/tcp/80/http/known-security] [tcp/80/http/known-security] There did not appear to be a .</description>
+    </item>
+    
+  </channel>
+</rss>

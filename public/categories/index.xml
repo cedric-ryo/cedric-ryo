@@ -2,9 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Categories on cedric-ryo.com</title>
-    <link>http://example.org/categories/</link>
+    <link>https://cedric-ryo.com/categories/</link>
     <description>Recent content in Categories on cedric-ryo.com</description>
     <generator>Hugo -- gohugo.io</generator>
-    <language>en-us</language><atom:link href="http://example.org/categories/index.xml" rel="self" type="application/rss+xml" />
+    <language>en-us</language>
+    <lastBuildDate>Sat, 02 Jul 2022 16:19:22 +0900</lastBuildDate><atom:link href="https://cedric-ryo.com/categories/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cyber Security</title>
+      <link>https://cedric-ryo.com/categories/cyber-security/</link>
+      <pubDate>Sat, 02 Jul 2022 16:19:22 +0900</pubDate>
+      
+      <guid>https://cedric-ryo.com/categories/cyber-security/</guid>
+      <description></description>
+    </item>
+    
   </channel>
 </rss>
